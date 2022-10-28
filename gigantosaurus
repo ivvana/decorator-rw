@@ -1,0 +1,65 @@
+///Създаваме интерфейс с единствен метод
+namespace DesignPatterns.Decorator
+{
+///------------
+    public interface IGigantosaurus
+    {
+        string Roar();
+    }
+    
+    ///------------------------
+    ///имплементираме интерфейса с клас
+    public class Gigantosaurus : IGigantosaurus
+    {
+        public string Roar()
+        {
+            return "РЕВ";
+        }
+    }
+    ///-----------------
+    ///Искаме да добавим още функции на гагантозавъра
+    ///обвивамее го в Декоратор:
+    
+    public class LoudGigantosarusDecorator : IGigantosaurus
+    {
+        protected readonly IGigantosaurus gigantosaurus;
+
+        public LoudGigantosarusDecorator(IGigantosaurus gigantosaurus)
+        {
+            this.gigantosaurus = gigantosaurus;
+        }
+
+        public string Roar()
+        {
+            return $"Много силен, {this.gigantosaurus.Roar()}";
+        }
+    }
+    ///---------------------
+    public static void DecoratorExample()
+    {
+        var gigantosaurus = new Gigantosaurus();
+
+        Console.WriteLine(gigantosaurus.Roar());
+
+        var loudGigantosaurus = new LoudGigantosarusDecorator(gigantosaurus);
+        var extraLoudGigantosaurus = new ExtraLoudGigantosaurusDecorator(loudGigantosaurus);
+
+        Console.WriteLine(extraLoudGigantosaurus.Roar());
+    }
+///-----------------
+/// в някои случаи, обаче, може ид а поискаме, нашият динозавър да не издава звуци...
+  public class SilentGigantosaurusDecorator : IGigantosaurus
+    {
+        protected readonly IGigantosaurus gigantosaurus;
+
+        public SilentGigantosaurusDecorator(IGigantosaurus gigantosaurus)
+        {
+            this.gigantosaurus = gigantosaurus;
+        }
+
+        public string Roar()
+        {
+            return "";
+        }
+    }
+}
